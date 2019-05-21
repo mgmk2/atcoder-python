@@ -1,3 +1,5 @@
+import copy
+
 def warshall_floyd(V, E):
     INF = 10 ** 9
     d = [[[INF, 0] for j in range(V + 1)] for i in range(V + 1)]
@@ -22,3 +24,22 @@ def find_path(i, j, d, E):
     E = find_path(i, k, d, E)
     E = find_path(k, j, d, E)
     return E
+
+n, m = map(int, input().split())
+E = [[None for j in range(n + 1)] for i in range(n + 1)]
+E_list = []
+for i in range(m):
+    a, b, c = map(int, input().split())
+    E_list.append([a, b, c])
+    E[a][b] = 0
+    E[b][a] = 0
+d = warshall_floyd(n, E_list)
+ans = 0
+for i in range(1, n + 1):
+    for j in range(i + 1, n + 1):
+        E = find_path(i, j, d, E)
+for i in range(1, n + 1):
+    for j in range(i + 1, n + 1):
+        if E[i][j] == 0:
+            ans += 1
+print(ans)
