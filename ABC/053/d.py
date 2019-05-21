@@ -1,0 +1,5 @@
+n = int(input())
+a = list(map(int, input().split()))
+a_unique = list(set(a))
+x = len(a) - len(a_unique)
+print(len(a_unique) - x % 2)
