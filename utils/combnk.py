@@ -14,15 +14,3 @@ def combnk_mod(n, k, p):
         x %= p
         y %= p
     return (x * y) % p
-
-n, m, k = map(int, input().split())
-MOD = 10 ** 9 + 7
-p = combnk_mod(n * m - 2, k - 2, MOD)
-x, y = 0, 0
-for i in range(2):
-    for d in range(1, n):
-        x += d * (n - d) * m ** 2
-        x %= MOD
-    x, y = y, x
-    n, m = m, n
-print(p * (x + y) % MOD)
