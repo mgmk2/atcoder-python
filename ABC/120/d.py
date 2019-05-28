@@ -1,40 +1,45 @@
-def dfs(x, y, k, z):
-    for l in z:
-        if x[k][l] == 1 and l not in y:
-            y.append(l)
-            y = dfs(x, y, l, z)
-    return y
+class UnionFind(object):
+    def __init__(self, n):
+        self.par = [i for i in range(n + 1)]
+        self.rank = [0 for i in range(n + 1)]
+        self.member = [1 for i in range(n + 1)]
+
+    def find(self, x):
+        if self.par[x] == x:
+            return x
+        self.par[x] = self.find(self.par[x])
+        return self.par[x]
+
+    def check(self, x, y):
+        return self.find(x) == self.find(y)
+
+    def union(self, x, y):
+        x = self.find(x)
+        y = self.find(y)
+        if self.rank[x] < self.rank[y]:
+            self.par[x] = y
+            self.member[y] += self.member[x]
+        elif self.rank[x] > self.rank[y]:
+            self.par[y] = x
+            self.member[x] += self.member[y]
+        else:
+            self.par[y] = x
+            self.rank[x] += 1
+            self.member[x] += self.member[y]
+
+    def size(self, x):
+        return self.member[self.par[x]]
 
 n, m = map(int, input().split())
-a = [None for _ in range(n)]
-for i in range(n):
-    a[i] = [0 for _ in range(n)]
-
-bridge = []
-for i in range(m):
-    s, t = map(int, input().split())
-    a[s - 1][t - 1] = 1
-    a[t - 1][s - 1] = 1
-    bridge.append([s - 1, t - 1])
-
-d = [list(range(n))]
-for p in range(m):
-    a[bridge[p][0]][bridge[p][1]] = 0
-    a[bridge[p][1]][bridge[p][0]] = 0
-    b = []
-    c = []
-    for j in range(len(d)):
-        for i in range(n):
-            if i not in b:
-                tmp = dfs(a, [i], i, d[j])
-                b += tmp
-                c.append(tmp)
-    ans = 0
-    if len(c) > 1:
-        ans = 0
-        for i in range(len(c)):
-            ans += len(c[i]) * (n - len(c[i]))
-        ans = ans // 2
+E = [list(map(int, input().split())) for _ in range(m)]
+ans = [0 for _ in range(m + 1)]
+ans[-1] = n * (n - 1) // 2
+tree = UnionFind(n)
+for i, e in enumerate(E[::-1]):
+    if tree.check(*e):
+        ans[-(i + 2)] = ans[-(i + 1)]
     else:
-        ans = 0
-    print(ans)
+        ans[-(i + 2)] = ans[-(i + 1)] -  tree.size(e[0]) * tree.size(e[1])
+        tree.union(*e)
+for a in ans[1:]:
+    print(a)
