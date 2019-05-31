@@ -1,42 +1,30 @@
 n, k = map(int, input().split())
+sushi = [list(map(int, input().split())) for _ in range(n)]
+sushi.sort(key=lambda x: x[1])
+t = {}
 x = []
-for i in range(n):
-    x.append(list(map(int, input().split())))
-x = sorted(x, key=lambda x: x[1])[::-1]
-y = {}
-z = [0]
-for i in range(k):
-    z[-1] += x[i][1]
-    if x[i][0] in y.keys():
-        y[x[i][0]] += 1
+z = 0
+for i in range(n - 1, n - k - 1, -1):
+    ti, di = sushi[i]
+    if ti in t.keys():
+        x.append(di)
+        t[ti] += 1
     else:
-        y[x[i][0]] = 1
-z[-1] += len(y.keys()) ** 2
+        t[ti] = 1
+    z += di
 
-j = 0
-while(True):
-    z.append(z[-1])
-    flag0 = False
-    for i in range(k - 1 - j, -1, -1):
-        if y[x[i][0]] > 1:
-            y[x[i][0]] -= 1
-            z[-1] -= x[i][1]
-            flag0 = True
-            break
-    flag1 = False
-    for i in range(k + j, n):
-        if x[i][0] not in y.keys():
-            y[x[i][0]] = 1
-            z[-1] += x[i][1]
-            flag1 = True
-            break
-    if flag0 and flag1:
-        z[-1] += 2 * len(y.keys()) - 1
-    else:
-        del z[-1]
+p = len(t.keys())
+ans = z + p ** 2
+idx = 1
+for i in range(n - k - 1, -1, -1):
+    if idx == len(x) + 1:
         break
-    if k + j + 1 == n or len(y.keys()) == k or z[-1] == z[-2]:
-        break
-    else:
-        j += 1
-print(max(z))
+    ti, di = sushi[i]
+    if ti not in t.keys():
+        t[ti] = 1
+        z += di - x[-idx]
+        p += 1
+        idx += 1
+        ans = max(ans, z + p ** 2)
+
+print(ans)
