@@ -1,14 +1,15 @@
 n, c = map(int, input().split())
 x = [list(map(int, input().split())) for _ in range(n)]
-x.sort()
-rec = [x[0]]
-for i in range(1, n):
-    xx = x[i]
-    flag = True
-    for j in range(len(rec)):
-        if rec[j][1] <= xx[0] - 0.5:
-            rec[j] = xx
-            flag = False
-    if flag:
-        rec.append(xx)
-print(len(rec))
+x.sort(key=lambda x: [x[-1], x[0]])
+ans = [0 for _ in range(2 * 10 ** 5 + 2)]
+cc = -1
+for i in range(n):
+    si, ti, ci = x[i]
+    if ci != cc:
+        tt = [0 for _ in range(2 * 10 ** 5 + 2)]
+    for j in range(2 * si - 1, 2 * ti):
+        if tt[j] == 0:
+            tt[j] = 1
+            ans[j] += 1
+    cc = ci
+print(max(ans))

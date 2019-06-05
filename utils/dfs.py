@@ -4,3 +4,12 @@ def dfs(i, V, E):
     for j in Vi[::-1]:
         V = dfs(j, V, E)
     return V
+
+def dfs(i, V, E):
+    S = [i]
+    while(len(S) > 0):
+        vi = S.pop()
+        for j in E[vi]:
+            if V[j] == 0:
+                S.append(j)
+    return V
