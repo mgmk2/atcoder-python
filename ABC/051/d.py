@@ -1,5 +1,3 @@
-import copy
-
 def warshall_floyd(V, E):
     INF = 10 ** 9
     d = [[[INF, 0] for j in range(V + 1)] for i in range(V + 1)]
