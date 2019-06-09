@@ -36,13 +36,13 @@ E = [list(map(int, input().split())) for _ in range(m)]
 E.sort(reverse=True, key=lambda x: x[-1])
 q = int(input())
 question = [[i] + list(map(int, input().split())) for i in range(q)]
-question.sort(reverse=True, key=lambda x: x[-1])
+question.sort(key=lambda x: x[-1])
 union = UnionFind(n)
-ans = [1 for _ in range(q)]
+ans = [None] * q
 j = 0
 for ai, bi, yi in E:
-    while(j < q and question[j][2] >= yi):
-        k, vk, _ = question[j]
+    while(j < q and question[-1][-1] >= yi):
+        k, vk, _ = question.pop()
         ans[k] = union.size(vk)
         j += 1
     if j == q:
@@ -50,7 +50,7 @@ for ai, bi, yi in E:
     union.union(ai, bi)
 else:
     while(j < q):
-        k, vk, _ = question[j]
+        k, vk, _ = question.pop()
         ans[k] = union.size(vk)
         j += 1
 for i in range(q):
