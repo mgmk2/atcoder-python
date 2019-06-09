@@ -28,4 +28,4 @@ class UnionFind(object):
             self.member[x] += self.member[y]
 
     def size(self, x):
-        return self.member[self.par[x]]
+        return self.member[self.find(x)]
