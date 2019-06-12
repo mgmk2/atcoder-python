@@ -1,4 +1,4 @@
 # atcoder-python
 
 atcoder's python code.  
-Because Python3 is a slower language than other languages like C++, some solutions' condition is timeout evenif solutions are assumed.
+Because Python3 is a slower language than other languages like C++, some solution conditions are timeout evenif the solution is assumed.
