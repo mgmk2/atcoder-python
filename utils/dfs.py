@@ -11,5 +11,5 @@ def dfs(i, V, E):
         vi = S.pop()
         for j in E[vi]:
             if V[j] == 0:
+                V[j] = 1
                 S.append(j)
-    return V
