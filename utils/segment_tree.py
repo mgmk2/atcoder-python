@@ -53,8 +53,9 @@ class LazySegmentTree(object):
     def _eval(self, k):
         if self._lazy_tree[k] is None:
             return
+
         v = self._lazy_tree[k]
-        elif k < self._N - 1:
+        if k < self._N - 1:
             self._lazy_tree[2 * k + 1] = v
             self._lazy_tree[2 * (k + 1)] = v
 
